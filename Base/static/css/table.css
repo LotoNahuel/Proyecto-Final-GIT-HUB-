@@ -1,0 +1,30 @@
+#main-container{
+    margin: 150px auto;
+    width: 600px;
+}
+
+table{
+    text-align: left;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td{
+    border: solid 5px steelblue;
+    padding: 5;
+}
+
+thead{
+    background-color: steelblue;
+    border-bottom: solid 5px steelblue;
+    color: white;
+}
+
+tr:nth-child(){
+    background-color: darkgrey;
+}
+
+tr:hover td{
+    background-color: rgb(44, 115, 173);
+    color: white;
+}

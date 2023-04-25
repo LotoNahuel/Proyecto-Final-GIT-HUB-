@@ -1,0 +1,63 @@
+{% extends "padre.html" %}
+
+{% load static %}
+
+{% block contenido_que_cambia %}
+
+<section class="showcase">
+    <div class="container-fluid p-2">
+        <div class="row g-0">
+            <div class="col-lg-4 order-lg-2 my-auto showcase-text">
+                <div id="main-container">
+                    <p> {{ mensaje }} </p>                        
+                    <table>                           
+                        <tbody>
+                            {% if modelos %}
+                            <tr>
+                                <th>titulo</th>
+                                <th>diseño</th>
+                                <th>descripcion</th>
+                                <th>fechaPost</th>
+                                <th>emailUsuario</th>
+                                <th>Opciones</th>
+                            </tr>
+                            
+                            {% for modelo in modelos %}
+                            <tr>
+                                <tr>
+                                    <td>
+                                        {{modelo.titulo}}
+                                    </td>
+                                    <td>
+                                        {{modelo.diseño}}
+                                    </td>
+                                    <td>
+                                        {{modelo.descripcion}}
+                                    </td>
+                                    <td>
+                                        {{modelo.fechaPost}}
+                                    </td>
+                                    <td>
+                                        {{modelo.emailUsuario}}
+                                    </td>
+                                    <td>
+                                        <a class="btn" href="{% url 'eliminarModelo' modelo.id %}">Eliminar</a>
+                                        <a class="btn" href="{% url 'editarModelo' modelo.id %}">Editar</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+
+                            {% else %}
+
+                            <td>No se ha encontrado ningun modelo</td>
+                            
+                            {% endif %}
+                        </tbody>
+                    </table>                
+                </div>
+            </div>
+        </div>
+    </div>
+</section>   
+
+{% endblock %}
