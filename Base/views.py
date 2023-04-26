@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import *
-from .forms import ModeloForm, RegistroForm
+from .forms import ModeloForm, RegistroForm, UserEditForm
 from django.db.models import Q
 from django.http import HttpResponse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -117,8 +117,12 @@ def herramientaFilter(request):
 
 
 
+
+
+
 #ModificarAndEliminar
 
+@login_required
 def eliminarModelo(request, id):
     modelo=Modelo.objects.get(id=id)
     print(modelo)
@@ -157,6 +161,19 @@ def editarModelo(request, id):
 
 #RegisterAndLogin
 
+def register(request):
+    if request.method=="POST":
+        form= RegistroForm(request.POST)
+        if form.is_valid():
+            username= form.cleaned_data.get("username")
+            form.save()
+            return render(request, "login.html", {"mensaje": f"Se creo el usuario {username}"})
+        else:
+            return render(request, "registro.html", {"form": form, "mensaje": "Error al crear el usuario"})
+    else:
+        form= RegistroForm()
+        return render(request, "registro.html", {"form": form})
+
 def login_usuario(request):
     if request.method=="POST":
         form=AuthenticationForm(request, data=request.POST)
@@ -177,16 +194,21 @@ def login_usuario(request):
         form=AuthenticationForm()
         return render(request, "login.html", {"form": form})
 
-
-def register(request):
+def editar_usuario(request):
+    usuario=request.user
     if request.method=="POST":
-        form= RegistroForm(request.POST)
+        form=UserEditForm(request.POST)
         if form.is_valid():
-            username= form.cleaned_data.get("username")
-            form.save()
-            return render(request, "login.html", {"mensaje": f"Se creo el usuario {username}"})
+            info=form.cleaned_data
+            usuario.first_name=info["first_name"]
+            usuario.last_name=info["last_name"]
+            usuario.email=info["email"]
+            usuario.password1=info["password1"]
+            usuario.password2=info["password2"]
+            usuario.save()
+            return render(request, "inicio.html", {"mensaje": f"Usuario {usuario.username} a sido editado."})
         else:
-            return render(request, "registro.html", {"form": form, "mensaje": "Error al crear el usuario"})
+            return render(request, "editarUsuario.html", {"form": form, "nombreusuario": usuario.username})
     else:
-        form= RegistroForm()
-        return render(request, "registro.html", {"form": form})
+        form=UserEditForm(instance=usuario)
+        return render(request, "editarUsuario.html", {"form": form, "nombreusuario":usuario.username})
