@@ -21,15 +21,12 @@ def modelos(request):
         if form.is_valid():
             modelo = Modelo()
             modelo.titulo = form.cleaned_data["titulo"]
-            modelo.imagen = form.files["imagen"]
+            modelo.imagen = form.FILES["imagen"]
             modelo.diseño = form.cleaned_data["diseño"]
             modelo.descripcion = form.cleaned_data["descripcion"]
             modelo.fechaPost = form.cleaned_data["fechaPost"]
-            modelo.emailUsuario = form.cleaned_data["emailUsuario"]
             modelo.save()
             form = ModeloForm()
-        else:
-            return render(request, "carga.html", {"modelos": modelos, "form": form, "mensaje": "Post Creado", "avatar": obtenerAvatar(request)})
     else:
         form = ModeloForm()
 
@@ -146,15 +143,12 @@ def editarModelo(request, id):
             modelo.imagen=info["imagen"]
             modelo.diseño=info["diseño"]
             modelo.descripcion=info["descripcion"]
-            modelo.fechaPost=info["fechaPost"]
-            modelo.emailUsuario=info["emailUsuario"]            
+            modelo.fechaPost=info["fechaPost"]           
             modelo.save()
             modelos = Modelo.objects.all()
             form=ModeloForm()
             return render(request, "carga.html", {"modelos":modelos, "mensaje": "Editado correctamente", "form": form})
-        else:
-            formulary= ModeloForm(initial={"titulo":modelo.titulo, "diseño":modelo.diseño, "descripcion":modelo.descripcion, "fechaPost":modelo.fechaPost, "emailUsuario":modelo.emailUsuario})
-            return render(request, "modeloform.html", {"form": formulary, "modelo": modelo, "avatar": obtenerAvatar(request)})
+        pass
     else:
         formulary= ModeloForm(initial={"titulo":modelo.titulo, "diseño":modelo.diseño, "descripcion":modelo.descripcion, "fechaPost":modelo.fechaPost, "emailUsuario":modelo.emailUsuario})
         return render(request, "modeloform.html", {"form": formulary, "modelo": modelo, "avatar": obtenerAvatar(request)})

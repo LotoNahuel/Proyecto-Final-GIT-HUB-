@@ -50,7 +50,6 @@
                             <th>diseño</th>
                             <th>descripcion</th>
                             <th>fechaPost</th>
-                            <th>emailUsuario</th>
                             <th>Opciones</th>
                         </tr>
                         
@@ -61,7 +60,7 @@
                                     {{modelo.titulo}}
                                 </td>
                                 <td>
-                                    {{modelo.imagen}}
+                                    <img src="{{modelo.imagen.url}}" style="width:720px;height:480px;" alt="">
                                 </td>
                                 <td>
                                     {{modelo.diseño}}
@@ -71,9 +70,6 @@
                                 </td>
                                 <td>
                                     {{modelo.fechaPost}}
-                                </td>
-                                <td>
-                                    {{modelo.emailUsuario}}
                                 </td>
                                 <td>
                                     <a class="btn btn-danger" href="{% url 'eliminarModelo' modelo.id %}">Eliminar</a>

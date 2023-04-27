@@ -1,14 +1,14 @@
 from django import forms
+from .models import *
 from django.contrib.auth.forms import  UserCreationForm
 from django.contrib.auth.models import User
 
 class ModeloForm(forms.Form):
-    titulo = forms.CharField(max_length=100)
-    imagen=forms.ImageField(label="Imagen")
-    diseño = forms.CharField(max_length=70)
-    descripcion = forms.CharField(max_length=500)
-    fechaPost = forms.DateField()
-    emailUsuario = forms.EmailField()
+    class Meta:
+        model = Modelo
+        fields = ['titulo', 'imagen', 'diseño', 'descripcion', 'emailUsuario']
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
 class RegistroForm(UserCreationForm):
     first_name=forms.CharField(label="Nombre")
