@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import *
-from .forms import ModeloForm, RegistroForm, UserEditForm
+from .forms import ModeloForm, RegistroForm, UserEditForm, AvatarForm
 from django.db.models import Q
 from django.http import HttpResponse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -11,33 +11,37 @@ from django.contrib.auth.decorators import login_required
 
 
 def inicio(request):
-    return render(request, "inicio.html")
+    return render(request, "inicio.html", {"avatar": obtenerAvatar(request)})
+
 
 @login_required
 def modelos(request):
     if request.method == "POST":
-        form = ModeloForm(request.POST)
+        form = ModeloForm(request.POST, request.FILES)
         if form.is_valid():
             modelo = Modelo()
             modelo.titulo = form.cleaned_data["titulo"]
+            modelo.imagen = form.files["imagen"]
             modelo.diseño = form.cleaned_data["diseño"]
             modelo.descripcion = form.cleaned_data["descripcion"]
             modelo.fechaPost = form.cleaned_data["fechaPost"]
             modelo.emailUsuario = form.cleaned_data["emailUsuario"]
             modelo.save()
             form = ModeloForm()
+        else:
+            return render(request, "carga.html", {"modelos": modelos, "form": form, "mensaje": "Post Creado", "avatar": obtenerAvatar(request)})
     else:
         form = ModeloForm()
 
     modelos = Modelo.objects.all()
-    return render(request, "carga.html", {"modelos": modelos, "form": form})
+    return render(request, "carga.html", {"modelos": modelos, "form": form, "avatar": obtenerAvatar(request)})
 
 @login_required
 def otroFilter(request):
     diseño = ["diseño"]
     if diseño != "":
         modelos = Modelo.objects.filter(diseño__icontains="Otro").all()
-        return render(request, "otro.html", {"modelos": modelos})
+        return render(request, "otro.html", {"modelos": modelos, "avatar": obtenerAvatar(request)})
     else:
         return render (request, "otro.html")
 
@@ -46,7 +50,7 @@ def arteFilter(request):
     diseño = ["Arte"]
     if diseño != "":
         modelos = Modelo.objects.filter(diseño__icontains="Arte").all()
-        return render(request, "arte.html", {"modelos": modelos})
+        return render(request, "arte.html", {"modelos": modelos, "avatar": obtenerAvatar(request)})
     else:
         return render (request, "arte.html")
 
@@ -55,7 +59,7 @@ def modaFilter(request):
     diseño = ["diseño"]
     if diseño != "":
         modelos = Modelo.objects.filter(diseño__icontains="Moda").all()
-        return render(request, "moda.html", {"modelos": modelos})
+        return render(request, "moda.html", {"modelos": modelos, "avatar": obtenerAvatar(request)})
     else:
         return render (request, "moda.html")
 
@@ -64,7 +68,7 @@ def joyaFilter(request):
     diseño = ["diseño"]
     if diseño != "":
         modelos = Modelo.objects.filter(diseño__icontains="Joyas").all()
-        return render(request, "joya.html", {"modelos": modelos})
+        return render(request, "joya.html", {"modelos": modelos, "avatar": obtenerAvatar(request)})
     else:
         return render(request, "joya.html")
 
@@ -73,7 +77,7 @@ def casaFilter(request):
     diseño = ["diseño"]
     if diseño != "":
         modelos = Modelo.objects.filter(diseño__icontains="Casa").all()
-        return render(request, "casa.html", {"modelos": modelos})
+        return render(request, "casa.html", {"modelos": modelos, "avatar": obtenerAvatar(request)})
     else:
         return render(request, "casa.html")
 
@@ -82,7 +86,7 @@ def arquitecturaFilter(request):
     diseño = ["diseño"]
     if diseño != "":
         modelos = Modelo.objects.filter(diseño__icontains="Arquitectura").all()
-        return render(request, "arquitectura.html", {"modelos": modelos})
+        return render(request, "arquitectura.html", {"modelos": modelos, "avatar": obtenerAvatar(request)})
     else:
         return render(request, "arquitectura.html")
 
@@ -91,7 +95,7 @@ def artilugioFilter(request):
     diseño = ["diseño"]
     if diseño != "":
         modelos = Modelo.objects.filter(diseño__icontains="Artilugio").all()
-        return render(request, "artilugio.html", {"modelos": modelos})
+        return render(request, "artilugio.html", {"modelos": modelos, "avatar": obtenerAvatar(request)})
     else:
         return render(request, "artilugio.html")
 
@@ -100,7 +104,7 @@ def juegoFilter(request):
     diseño = ["diseño"]
     if diseño != "":
         modelos = Modelo.objects.filter(diseño__icontains="Juego").all()
-        return render(request, "juego.html", {"modelos": modelos})
+        return render(request, "juego.html", {"modelos": modelos, "avatar": obtenerAvatar(request)})
     else:
         return render(request, "juego.html")
 
@@ -109,7 +113,7 @@ def herramientaFilter(request):
     diseño = ["diseño"]
     if diseño != "":
         modelos = Modelo.objects.filter(diseño__icontains="Herramienta").all
-        return render(request, "herramienta.html", {"modelos": modelos}) 
+        return render(request, "herramienta.html", {"modelos": modelos, "avatar": obtenerAvatar(request)}) 
     else:
         return render(request, "herramienta.html")
 
@@ -139,6 +143,7 @@ def editarModelo(request, id):
         if form.is_valid():
             info=form.cleaned_data
             modelo.titulo=info["titulo"]
+            modelo.imagen=info["imagen"]
             modelo.diseño=info["diseño"]
             modelo.descripcion=info["descripcion"]
             modelo.fechaPost=info["fechaPost"]
@@ -147,10 +152,12 @@ def editarModelo(request, id):
             modelos = Modelo.objects.all()
             form=ModeloForm()
             return render(request, "carga.html", {"modelos":modelos, "mensaje": "Editado correctamente", "form": form})
-        pass
+        else:
+            formulary= ModeloForm(initial={"titulo":modelo.titulo, "diseño":modelo.diseño, "descripcion":modelo.descripcion, "fechaPost":modelo.fechaPost, "emailUsuario":modelo.emailUsuario})
+            return render(request, "modeloform.html", {"form": formulary, "modelo": modelo, "avatar": obtenerAvatar(request)})
     else:
         formulary= ModeloForm(initial={"titulo":modelo.titulo, "diseño":modelo.diseño, "descripcion":modelo.descripcion, "fechaPost":modelo.fechaPost, "emailUsuario":modelo.emailUsuario})
-        return render(request, "modeloform.html", {"form": formulary, "modelo": modelo})
+        return render(request, "modeloform.html", {"form": formulary, "modelo": modelo, "avatar": obtenerAvatar(request)})
 
     
 
@@ -208,7 +215,32 @@ def editar_usuario(request):
             usuario.save()
             return render(request, "inicio.html", {"mensaje": f"Usuario {usuario.username} a sido editado."})
         else:
-            return render(request, "editarUsuario.html", {"form": form, "nombreusuario": usuario.username})
+            return render(request, "editarUsuario.html", {"form": form, "nombreusuario": usuario.username, "avatar": obtenerAvatar(request)})
     else:
         form=UserEditForm(instance=usuario)
-        return render(request, "editarUsuario.html", {"form": form, "nombreusuario":usuario.username})
+        return render(request, "editarUsuario.html", {"form": form, "nombreusuario":usuario.username, "avatar": obtenerAvatar(request)})
+
+
+def obtenerAvatar(request):
+    avatares=Avatar.objects.filter(user=request.user.id)
+    if len(avatares)!=0:
+        return avatares[0].image.url
+    else:
+        return "/media/avatar/default.png"
+
+@login_required
+def agregarAvatar(request):
+    if request.method=="POST":
+        form=AvatarForm(request.POST, request.FILES)
+        if form.is_valid():
+            avatar=Avatar(user=request.user, image=request.FILES["image"])
+            avatarViejo=Avatar.objects.filter(user=request.user)
+            if len(avatarViejo)>0:
+                avatarViejo[0].delete()
+            avatar.save()
+            return render(request, "inicio.html", {"mensaje": "Avatar agregado", "avatar": obtenerAvatar(request)})
+        else:
+            return render(request, "agregarAvatar.html", {"form": form, "usuario": request.user, "mensaje": "Error al guardar el archivo", "avatar": obtenerAvatar(request)})
+    else:
+        form=AvatarForm()
+        return render(request, "agregarAvatar.html", {"form": form, "usuario": request.user, "avatar": obtenerAvatar(request)})

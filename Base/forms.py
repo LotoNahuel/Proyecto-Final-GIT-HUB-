@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 
 class ModeloForm(forms.Form):
     titulo = forms.CharField(max_length=100)
+    imagen=forms.ImageField(label="Imagen")
     diseño = forms.CharField(max_length=70)
     descripcion = forms.CharField(max_length=500)
     fechaPost = forms.DateField()
@@ -32,3 +33,6 @@ class UserEditForm(UserCreationForm):
         model=User
         fields=["first_name", "last_name", "email", "password1", "password2"]
         help_text = {k:"" for k in fields}
+
+class AvatarForm(forms.Form):
+    image=forms.ImageField(label="Image")

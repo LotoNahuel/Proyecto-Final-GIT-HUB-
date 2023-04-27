@@ -21,4 +21,5 @@ urlpatterns = [
     path("register/", register, name="registro"),
     path("logout/", LogoutView.as_view(), name="logout"), #Por si quiero cambiar template_name="logout.html"
     path("editarUsuario/", editar_usuario, name="editarUsuario"),
+    path("agregarAvatar/", agregarAvatar, name="agregarAvatar"),
 ]
