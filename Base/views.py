@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import *
-from .forms import ModeloForm, RegistroForm, UserEditForm, AvatarForm
+from .forms import ModeloForm, ComentForm, RegistroForm, UserEditForm, AvatarForm
 from django.db.models import Q
 from django.http import HttpResponse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -14,18 +14,13 @@ def inicio(request):
     return render(request, "inicio.html", {"avatar": obtenerAvatar(request)})
 
 
+
 @login_required
 def modelos(request):
     if request.method == "POST":
         form = ModeloForm(request.POST, request.FILES)
         if form.is_valid():
-            modelo = Modelo()
-            modelo.titulo = form.cleaned_data["titulo"]
-            modelo.imagen = form.FILES["imagen"]
-            modelo.diseño = form.cleaned_data["diseño"]
-            modelo.descripcion = form.cleaned_data["descripcion"]
-            modelo.fechaPost = form.cleaned_data["fechaPost"]
-            modelo.save()
+            form.save()
             form = ModeloForm()
     else:
         form = ModeloForm()
@@ -123,6 +118,7 @@ def herramientaFilter(request):
 
 #ModificarAndEliminar
 
+
 @login_required
 def eliminarModelo(request, id):
     modelo=Modelo.objects.get(id=id)
@@ -143,15 +139,34 @@ def editarModelo(request, id):
             modelo.imagen=info["imagen"]
             modelo.diseño=info["diseño"]
             modelo.descripcion=info["descripcion"]
-            modelo.fechaPost=info["fechaPost"]           
+            modelo.fechaPost=info["fechaPost"]         
             modelo.save()
             modelos = Modelo.objects.all()
             form=ModeloForm()
             return render(request, "carga.html", {"modelos":modelos, "mensaje": "Editado correctamente", "form": form})
-        pass
+        else:
+            formulary= ModeloForm(initial={"titulo":modelo.titulo, "diseño":modelo.diseño, "descripcion":modelo.descripcion, "fechaPost":modelo.fechaPost})
+            return render(request, "modeloform.html", {"form": formulary, "modelo": modelo, "avatar": obtenerAvatar(request), "mensaje": "Error al subir los datos"})
     else:
-        formulary= ModeloForm(initial={"titulo":modelo.titulo, "diseño":modelo.diseño, "descripcion":modelo.descripcion, "fechaPost":modelo.fechaPost, "emailUsuario":modelo.emailUsuario})
+        formulary= ModeloForm(initial={"titulo":modelo.titulo, "diseño":modelo.diseño, "descripcion":modelo.descripcion, "fechaPost":modelo.fechaPost})
         return render(request, "modeloform.html", {"form": formulary, "modelo": modelo, "avatar": obtenerAvatar(request)})
+    
+@login_required
+def comentarios(request):
+    if request.method == "POST":
+        form = ComentForm(request.POST)
+        if form.is_valid():
+            comentario = Comentario()
+            comentario.texto = form.cleaned_data["texto"]
+            comentario.nombre = form.cleaned_data["nombre"]
+            comentario.save()
+            form = ComentForm()
+    else:
+        form = ComentForm()
+        
+    comentarios = Comentario.objects.all()
+    return render(request, "otro.html", {"form": form, "comentarios": comentarios, "avatar": obtenerAvatar(request)})
+    
 
     
 
@@ -193,7 +208,12 @@ def login_usuario(request):
             return render(request, "login.html", {"form": form, "mensaje":"Usuario y/o contraseña incorrectos"})
     else:
         form=AuthenticationForm()
-        return render(request, "login.html", {"form": form})
+        return render(request, "login.html", {"form": form, "usuario": usuario})
+    
+def perfil(request):
+    usuario=request.user
+    if request.method=="GET":
+        return render(request, "perfil.html", {"mensaje":usuario.username, "avatar": obtenerAvatar(request)})
 
 def editar_usuario(request):
     usuario=request.user
@@ -221,6 +241,7 @@ def obtenerAvatar(request):
         return avatares[0].image.url
     else:
         return "/media/avatar/default.png"
+    
 
 @login_required
 def agregarAvatar(request):
@@ -229,8 +250,8 @@ def agregarAvatar(request):
         if form.is_valid():
             avatar=Avatar(user=request.user, image=request.FILES["image"])
             avatarViejo=Avatar.objects.filter(user=request.user)
-            if len(avatarViejo)>0:
-                avatarViejo[0].delete()
+            if len (avatarViejo)>0:
+                (avatarViejo)[0].delete()
             avatar.save()
             return render(request, "inicio.html", {"mensaje": "Avatar agregado", "avatar": obtenerAvatar(request)})
         else:

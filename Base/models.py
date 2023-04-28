@@ -14,7 +14,7 @@ class Modelo(models.Model):
     ('otro','Otro'),
     )
     titulo = models.CharField(max_length=100)
-    imagen = models.ImageField(upload_to="post", null=True)
+    imagen = models.ImageField(upload_to="post", null=True, blank=True)
     diseño = models.CharField(max_length=20, null=False, blank=False, choices=diseñoSelect)
     descripcion = models.CharField(max_length=500)
     fechaPost = models.DateTimeField(auto_now_add=True)
@@ -23,12 +23,12 @@ class Modelo(models.Model):
         return f"{self.titulo} {self.descripcion}"
     
 class Comentario(models.Model):
-    nombre = models.CharField(max_length=50)
-    comentario = models.CharField(max_length=500)
-    fechaComentario = models.DateTimeField(auto_now_add=True)
+    nombre = models.ForeignKey(Modelo, related_name="comentarios", on_delete=models.CASCADE)
+    texto = models.CharField(max_length=500)
+    fechaComentario = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.nombre} {self.comentario}"
+        return f"{self.nombre} {self.texto}"
     
 class Avatar(models.Model):
     image = models.ImageField(upload_to="avatar")

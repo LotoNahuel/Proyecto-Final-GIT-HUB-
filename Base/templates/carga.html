@@ -18,7 +18,7 @@
                 <p class="lead mb-0">Complete los campos, para agregar un curso.</p>
                 <div id="main-container">
                     <table>
-                        <form action="" method="post">
+                        <form action="" method="post" enctype="multipart/form-data">
                             <table>
                                 {{ form }}
                                 {% csrf_token %}
@@ -52,7 +52,7 @@
                             <th>fechaPost</th>
                             <th>Opciones</th>
                         </tr>
-                        
+
                         {% for modelo in modelos %}
                         <tr>
                             <tr>
