@@ -2,32 +2,7 @@
 
 {% load static %}
 
-{% block contenido_que_cambia %}
-
-<section class="showcase">
-    <div class="container-fluid p-2">
-        <div class="row g-0">
-            <div class="col-lg-6 order-lg-1 my-auto showcase-text">
-                <h2>Formulario:</h2>
-                <p class="lead mb-0">Complete los campos, para agregar un curso.</p>
-                <div id="main-container">
-                    <table>
-                        <form action="{% url 'comentarios' %}" method="get">
-                            <table>
-                                {{ form }}
-                                {% csrf_token %}
-                            </table>
-                            
-                            <table>
-                                <input type="submit" value="Agregar"/>
-                            </table>
-                        </form>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>   
+{% block contenido_que_cambia %}  
 
 <section class="showcase">
     <div class="container-fluid p-2">
@@ -71,21 +46,14 @@
                                     </td>
                                 </tr>
                             {% endfor %}
-                            <tr>
-                                <th>Comentarios</th>
-                            </tr>
-                            {% for comentario in comentarios %}
-                                <tr>
-                                    <td>
-                                        {{comentario.texto}}
-                                    </td>
-                                </tr>
-                            {% endfor %}
+                            
                             {% else %}
 
                             <td>No se ha encontrado ningun modelo</td>
                             
                             {% endif %}
+
+                            
                         </tbody>
                     </table>                
                 </div>

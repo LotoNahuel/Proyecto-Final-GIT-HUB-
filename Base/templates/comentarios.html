@@ -1,0 +1,30 @@
+{% extends "padre.html" %}
+
+{% block contenido_que_cambia %}
+
+<section class="showcase">
+    <div class="container-fluid p-2">
+        <div class="row g-0">
+            <div class="col-lg-6 order-lg-1 my-auto showcase-text">
+                <h2>Comentarios:</h2>
+                <p class="lead mb-0">Comentar</p>
+                <div id="main-container">
+                    <table>
+                        <form action="" method="post">
+                            <table>
+                                {{ form }}
+                                {% csrf_token %}
+                            </table>
+                            
+                            <table>
+                                <input type="submit" value="Agregar"/>
+                            </table>
+                        </form>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

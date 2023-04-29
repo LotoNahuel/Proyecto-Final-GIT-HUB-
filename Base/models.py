@@ -23,13 +23,21 @@ class Modelo(models.Model):
         return f"{self.titulo} {self.descripcion}"
     
 class Comentario(models.Model):
-    nombre = models.ForeignKey(Modelo, related_name="comentarios", on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    modelo = models.ForeignKey(Modelo, related_name='comentario', on_delete=models.CASCADE, null=False)
     texto = models.CharField(max_length=500)
-    fechaComentario = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.nombre} {self.texto}"
+        return f"{self.user} {self.texto}"
     
 class Avatar(models.Model):
     image = models.ImageField(upload_to="avatar")
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+class Mensaje(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    texto = models.TextField()
+
+class Perfil(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    text = models.CharField(max_length=1000)

@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import *
-from .forms import ModeloForm, ComentForm, RegistroForm, UserEditForm, AvatarForm
+from .forms import ModeloForm, ComentForm, RegistroForm, UserEditForm, AvatarForm, PerfilForm
 from django.db.models import Q
 from django.http import HttpResponse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -12,6 +12,20 @@ from django.contrib.auth.decorators import login_required
 
 def inicio(request):
     return render(request, "inicio.html", {"avatar": obtenerAvatar(request)})
+
+@login_required
+def comentarios(request):
+    if request.method == "POST":
+        form = ComentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            form = ComentForm()
+    else:
+        form = ComentForm()
+        
+    comentarios = Comentario.objects.all()
+    return render(request, "comentarios.html", {"form": form, "comentarios": comentarios, "avatar": obtenerAvatar(request)})
+
 
 
 
@@ -27,6 +41,14 @@ def modelos(request):
 
     modelos = Modelo.objects.all()
     return render(request, "carga.html", {"modelos": modelos, "form": form, "avatar": obtenerAvatar(request)})
+
+def comentFilter(request):
+    texto = ["texto"]
+    if texto != "":
+        comentarios = Comentario.objects.all()
+        return render(request, "carga.html", {"comentarios": comentarios, "avatar": obtenerAvatar(request)})
+    else:
+        return render(request, "carga.html")
 
 @login_required
 def otroFilter(request):
@@ -132,40 +154,20 @@ def eliminarModelo(request, id):
 def editarModelo(request, id):
     modelo=Modelo.objects.get(id=id)
     if request.method == "POST":
-        form = ModeloForm(request.POST)
+        form = ModeloForm(request.POST, request.FILES)
         if form.is_valid():
-            info=form.cleaned_data
-            modelo.titulo=info["titulo"]
-            modelo.imagen=info["imagen"]
-            modelo.diseño=info["diseño"]
-            modelo.descripcion=info["descripcion"]
-            modelo.fechaPost=info["fechaPost"]         
-            modelo.save()
+            modeloViejo=modelo            
+            modeloViejo.delete()
+            form.save()
             modelos = Modelo.objects.all()
             form=ModeloForm()
             return render(request, "carga.html", {"modelos":modelos, "mensaje": "Editado correctamente", "form": form})
-        else:
-            formulary= ModeloForm(initial={"titulo":modelo.titulo, "diseño":modelo.diseño, "descripcion":modelo.descripcion, "fechaPost":modelo.fechaPost})
-            return render(request, "modeloform.html", {"form": formulary, "modelo": modelo, "avatar": obtenerAvatar(request), "mensaje": "Error al subir los datos"})
+        pass
     else:
         formulary= ModeloForm(initial={"titulo":modelo.titulo, "diseño":modelo.diseño, "descripcion":modelo.descripcion, "fechaPost":modelo.fechaPost})
         return render(request, "modeloform.html", {"form": formulary, "modelo": modelo, "avatar": obtenerAvatar(request)})
     
-@login_required
-def comentarios(request):
-    if request.method == "POST":
-        form = ComentForm(request.POST)
-        if form.is_valid():
-            comentario = Comentario()
-            comentario.texto = form.cleaned_data["texto"]
-            comentario.nombre = form.cleaned_data["nombre"]
-            comentario.save()
-            form = ComentForm()
-    else:
-        form = ComentForm()
-        
-    comentarios = Comentario.objects.all()
-    return render(request, "otro.html", {"form": form, "comentarios": comentarios, "avatar": obtenerAvatar(request)})
+
     
 
     
@@ -212,8 +214,24 @@ def login_usuario(request):
     
 def perfil(request):
     usuario=request.user
-    if request.method=="GET":
-        return render(request, "perfil.html", {"mensaje":usuario.username, "avatar": obtenerAvatar(request)})
+    if request.method=="POST":
+        form = PerfilForm(request.POST)
+        if form.is_valid():
+            form.save()
+            form = PerfilForm()
+            perfiles=Perfil.objects.all()
+        return render(request, "perfil.html", {"mensaje":usuario.username, "perfiles": perfiles, "avatar": obtenerAvatar(request)})
+    
+def Editarperfil(request):
+    perfil=request.user
+    if request.method=="POST":
+        form = PerfilForm(request.POST)
+        if form.is_valid():
+            info=form.cleaned_data
+            perfil.usuario=info["usuario"]
+            perfil.text=info["text"]
+            perfil.save()
+
 
 def editar_usuario(request):
     usuario=request.user

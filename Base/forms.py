@@ -9,8 +9,10 @@ class ModeloForm(forms.ModelForm):
         model = Modelo
         fields = ('titulo', 'imagen', 'diseño', 'descripcion')
 
-class ComentForm(forms.Form):
-    texto = forms.CharField(max_length=500)
+class ComentForm(forms.ModelForm):
+    class Meta:
+        model = Comentario
+        fields = ('user', 'modelo','texto')
 
 class RegistroForm(UserCreationForm):
     first_name=forms.CharField(label="Nombre")
@@ -41,4 +43,8 @@ class AvatarForm(forms.Form):
 
 class MensajeForm(forms.Form):
     text=forms.CharField(max_length=500)
-    
+
+class PerfilForm(forms.ModelForm):
+    class Meta:
+        model = Perfil
+        fields = ("usuario", "text")

@@ -51,10 +51,10 @@
                             <th>descripcion</th>
                             <th>fechaPost</th>
                             <th>Opciones</th>
+                            <th>Comentarios</th>
                         </tr>
 
                         {% for modelo in modelos %}
-                        <tr>
                             <tr>
                                 <td>
                                     {{modelo.titulo}}
@@ -74,10 +74,23 @@
                                 <td>
                                     <a class="btn btn-danger" href="{% url 'eliminarModelo' modelo.id %}">Eliminar</a>
                                     <a class="btn btn-danger" href="{% url 'editarModelo' modelo.id %}">Editar</a>
+                                    <a class="btn btn-danger" href="{% url 'comentarios' %}">Comentarios</a>
                                 </td>
+                                
+                                {% for comentario in comentarios %}
+                                    {% if comentario.modelo_id == modelo.id %}
+                                    <td>
+                                        {{comentario.texto}}
+                                    </td>
+                                    {% else %}
+                                    <td>
+                                        <th>No hay comentarios</th>
+                                    </td>
+                                    {% endif %}
+                                {% endfor %}
                             </tr>
+
                         {% endfor %}
-                        
                         {% else %}
                         
                         <td>No se ha encontrado ningun modelo</td>
