@@ -13,11 +13,20 @@
                         <tbody>
                             <tr>
                                 <th>
-                                    <h1>Usuario:{{mensaje}}</h1>
+                                    <h1>Usuario:{{usu}}</h1>
                                 </th>
+                                <th>Descripcion</th>
                             </tr>
+                            
                             <td>
                                 <img src="{{ avatar }}" alt="Avatar" style="width:200px;height:200px;">
+                            </td>
+                            {% for dato in perfil %}
+                            <td>{{dato.text}}</td>
+                            {% endfor %}
+                            
+                            <td>
+                                <a class="btn btn-danger" href="{% url 'perfilEdit' %}">Editar Descripcion</a>
                             </td>
                         </tbody>
                     </table>                

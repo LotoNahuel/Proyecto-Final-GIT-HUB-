@@ -9,10 +9,9 @@ class ModeloForm(forms.ModelForm):
         model = Modelo
         fields = ('titulo', 'imagen', 'diseño', 'descripcion')
 
-class ComentForm(forms.ModelForm):
-    class Meta:
-        model = Comentario
-        fields = ('user', 'modelo','texto')
+class ComentForm(forms.Form):
+    texto=forms.CharField(max_length=500)
+
 
 class RegistroForm(UserCreationForm):
     first_name=forms.CharField(label="Nombre")
@@ -22,8 +21,8 @@ class RegistroForm(UserCreationForm):
     password2=forms.CharField(label="Confirmar contraseña", widget=forms.PasswordInput)
 
     class Meta:
-        model=User
-        fields=["first_name", "last_name", "username", "email", "password1", "password2"]
+        model = User
+        fields = ("first_name", "last_name", "username", "email", "password1", "password2")
         help_texts = {k:"" for k in fields}
 
 class UserEditForm(UserCreationForm):
@@ -34,17 +33,16 @@ class UserEditForm(UserCreationForm):
     password2= forms.CharField(label="Confirmar Contraseña", widget=forms.PasswordInput)
 
     class Meta:
-        model=User
-        fields=["first_name", "last_name", "email", "password1", "password2"]
+        model = User
+        fields = ("first_name", "last_name", "email", "password1", "password2")
         help_text = {k:"" for k in fields}
 
 class AvatarForm(forms.Form):
     image=forms.ImageField(label="Image")
 
 class MensajeForm(forms.Form):
+    receptor=forms.CharField(max_length=100)
     text=forms.CharField(max_length=500)
 
-class PerfilForm(forms.ModelForm):
-    class Meta:
-        model = Perfil
-        fields = ("usuario", "text")
+class PerfilForm(forms.Form):
+    text = forms.CharField(max_length=1000)

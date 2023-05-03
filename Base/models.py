@@ -35,9 +35,10 @@ class Avatar(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 class Mensaje(models.Model):
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    emisor = models.ForeignKey(User, on_delete=models.CASCADE)
+    receptor = models.CharField(max_length=100)
     texto = models.TextField()
 
 class Perfil(models.Model):
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
     text = models.CharField(max_length=1000)

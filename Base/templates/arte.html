@@ -20,6 +20,7 @@
                                 <th>descripcion</th>
                                 <th>fechaPost</th>
                                 <th>Opciones</th>
+                                <th>Comentarios</th>
                             </tr>
                             
                             {% for modelo in modelos %}
@@ -44,6 +45,13 @@
                                         <a class="btn" href="{% url 'eliminarModelo' modelo.id %}">Eliminar</a>
                                         <a class="btn" href="{% url 'editarModelo' modelo.id %}">Editar</a>
                                     </td>
+                                    {% for dato in comentario %}
+
+                                    <td>{{dato.texto}}</td>
+                                    
+                                    {% endfor %}
+                                    
+                                    <td>{{sino}}</td>
                                 </tr>
                             {% endfor %}
 
