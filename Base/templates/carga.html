@@ -17,23 +17,21 @@
                 <h2>Formulario:</h2>
                 <p class="lead mb-0">Complete los campos, para agregar un curso.</p>
                 <div id="main-container">
-                    <table>
-                        <form action="" method="post" enctype="multipart/form-data">
-                            <table>
-                                {{ form }}
-                                {% csrf_token %}
-                            </table>
-                            
-                            <table>
-                                <input type="submit" value="Agregar"/>
-                            </table>
-                        </form>
-                    </table>
+                    <form action="" method="post" enctype="multipart/form-data">
+                        <table>
+                            {{ form }}
+                            {% csrf_token %}
+                        </table>
+                        <h3>
+                            <input type="submit" value="Agregar"/>
+                        </h3>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 </section>   
+
 
 <section class="showcase">
     <div class="container-fluid p-2">
@@ -45,6 +43,7 @@
                     <table>
                         {% if modelos %}
                         <tr>
+                            <th>Usuario</th>
                             <th>titulo</th>
                             <th>imagen</th>
                             <th>diseño</th>
@@ -56,6 +55,9 @@
 
                         {% for modelo in modelos %}
                             <tr>
+                                <td>
+                                    {{modelo.user}}
+                                </td>
                                 <td>
                                     {{modelo.titulo}}
                                 </td>
@@ -72,19 +74,31 @@
                                     {{modelo.fechaPost}}
                                 </td>
                                 <td>
+                                    {% if user == modelo.user %}
                                     <a class="btn btn-danger" href="{% url 'eliminarModelo' modelo.id %}">Eliminar</a>
                                     <a class="btn btn-danger" href="{% url 'editarModelo' modelo.id %}">Editar</a>
+                                    {% else %}
+                                    {% endif %}
                                     <a class="btn btn-danger" href="{% url 'comentarios' %}">Comentarios</a>
                                 </td>
                                 
-                                
-                                {% for dato in Comentarios %}
-
-                                <td>{{dato.texto}}</td>
-                                
-                                {% endfor %}
-
-                                <td>{{sino}}</td>
+                                {% if comentario %}
+                                    
+                                    
+                                    {% for dato in comentario %}
+                                        {% if modelo.descripcion == dato.modelo %}
+                                    
+                                        
+                                        <th>{{dato.texto}}</th>
+                                        
+                                        {% else %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    
+                                        
+                                {% else %}
+                                <td>No se a encontrado ningun comentario</td>
+                                {% endif %}
                             </tr>
 
                         {% endfor %}

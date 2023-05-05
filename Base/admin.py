@@ -6,4 +6,5 @@ from .models import *
 admin.site.register(Modelo)
 admin.site.register(Comentario)
 admin.site.register(Avatar)
+admin.site.register(Mensaje)
 admin.site.register(Perfil)

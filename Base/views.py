@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import *
-from .forms import ModeloForm, ComentForm, RegistroForm, UserEditForm, AvatarForm, MensajeForm, PerfilForm
+from .forms import  ModeloForm, ComentForm, RegistroForm, UserEditForm, AvatarForm, MensajeForm, PerfilForm
 from django.http import HttpResponse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
@@ -15,26 +15,17 @@ def inicio(request):
 
 @login_required
 def modelos(request):
+    modelo = ["modelo"]
     if request.method == "POST":
         form = ModeloForm(request.POST, request.FILES)
-        if form.is_valid():
+        if form.is_valid() and modelo != "":
             form.save()
             form = ModeloForm()
     else:
         form = ModeloForm()
-
+    comentario = Comentario.objects.all()
     modelos = Modelo.objects.all()
-    return render(request, "carga.html", {"modelos": modelos, "form": form, "avatar": obtenerAvatar(request)})
-
-    
-def perfil(request):
-    usu=request.user.id
-    usuario = ["usuario"]
-    if usuario == usu:
-        perfil = Perfil.objects.all()
-        return render(request, "perfil.html", {"perfil": perfil, "usu":request.user, "avatar": obtenerAvatar(request)})
-    else:
-        return render (request, "perfil.html")
+    return render(request, "carga.html", {"modelos": modelos, "form": form, "comentario": comentario, "avatar": obtenerAvatar(request)})
 
 @login_required
 def otroFilter(request):
@@ -125,7 +116,6 @@ def herramientaFilter(request):
 @login_required
 def eliminarModelo(request, id):
     modelo=Modelo.objects.get(id=id)
-    print(modelo)
     modelo.delete()
     modelos=Modelo.objects.all()
     form=ModeloForm()
@@ -137,7 +127,7 @@ def editarModelo(request, id):
     if request.method == "POST":
         form = ModeloForm(request.POST, request.FILES)
         if form.is_valid():
-            modeloViejo=modelo            
+            modeloViejo=modelo           
             modeloViejo.delete()
             form.save()
             modelos = Modelo.objects.all()
@@ -161,51 +151,30 @@ def comentarios(request):
             form = ComentForm()
     else:
         form = ComentForm()
-        
-    comentarios = Comentario.objects.all()
-    return render(request, "comentarios.html", {"form": form, "comentarios": comentarios, "avatar": obtenerAvatar(request)})
-
-@login_required
-def comentFilter(request):
-    modelo = ["modelo"]
-    user=request.user.id
-    if modelo != "":
-        comentario = Comentario.objects.filter(modelo=user).all()
-        return render(request, "carga.html", {"comentario": comentario, "avatar": obtenerAvatar(request)})
-    else:
-        return render(request, "carga.html", {"sino": "No hay comentarios"})
-    
+    return render(request, "comentarios.html", {"form": form, "avatar": obtenerAvatar(request)})
 
 #Mensajes
 
 def mensajes(request):
-    if request.method == "Post":
+    if request.method == "POST":
         form = MensajeForm(request.POST)
         if form.is_valid():
             form.save()
             form = MensajeForm()
     else:
-        form = MensajeForm()
-    mensajes = Mensaje.objects.all()
-    return render(request, {"form": form, "mensajes": mensajes, "avatar": obtenerAvatar(request)})
-
-def receptor(request):
-    receptor = ["receptor"]
-    user = request.user
-    if user in receptor:
-        mensaje = Mensaje.objects.all()
-        return render(request, {"mensaje": mensaje, "avatar": obtenerAvatar(request)})
-    else:
-        return render(request, {"recibido": "no hay mensajes recibidos"})
+        form = MensajeForm()   
+    return render(request, "mensaje.html", {"form": form, "avatar": obtenerAvatar(request)})
     
-def emisor(request):
+def emisorAndReceptor(request):
     emisor = ["emisor"]
-    user = request.user.id
-    if user in emisor:
-        mensajes = Mensaje.objects.all()
-        return render(request, {"mensajes": mensajes, "avatar": obtenerAvatar(request)})
+    receptor = ["receptor"]
+    user=request.user
+    if emisor != "" and receptor != "":
+        mensaje = Mensaje.objects.filter(emisor=user).all()
+        mesaje = Mensaje.objects.filter(receptor=user).all()
+        return render(request, "mensaje2.html", {"mensaje": mensaje, "mesaje": mesaje, "avatar": obtenerAvatar(request)})
     else:
-        return render(request, {"enviado": "no hay mensajes enviados"})
+        return render(request, "mensaje2.html")
 
 
 
@@ -265,7 +234,8 @@ def perfil(request):
     user=request.user.id
     if usuario != "":
         perfil = Perfil.objects.filter(usuario=user).all()
-        return render(request, "perfil.html", {"perfil": perfil, "usu":request.user, "avatar": obtenerAvatar(request)})
+        modelos = Modelo.objects.filter(user=user).all()
+        return render(request, "perfil.html", {"perfil": perfil, "modelos": modelos, "usu":request.user, "avatar": obtenerAvatar(request)})
     else:
         return render (request, "perfil.html", {"usu":request.user, "mensaje": "No hay descripcion", "avatar": obtenerAvatar(request)})
 

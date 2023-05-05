@@ -1,0 +1,83 @@
+{% extends "padre.html" %}
+
+{% load static %}
+
+{% block contenido_que_cambia %}
+
+<section class="showcase">
+    <div class="container-fluid p-2">
+        <div class="row g-0">
+            <div class="col-lg-6 order-lg-1 my-auto showcase-text">
+                <h2>Enviados:</h2>
+                <div id="main-container">
+                    <table>
+                        {% if mensaje %}
+                        <tr>
+                            <th>Mensaje:</th>
+                            <th>Enviado a:</th>
+                        </tr>
+
+                        {% for dato in mensaje %}
+                            <tr>
+                                <td>
+                                    {{dato.texto}}
+                                </td>
+                                <td>
+                                    {{dato.receptor}}
+                                </td>
+                            </tr>
+
+                        {% endfor %}
+                        {% else %}
+                        
+                        <td>No se ha encontrado ningun mensaje</td>
+                        
+                        {% endif %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>   
+
+<section class="showcase">
+    <div class="container-fluid p-2">
+        <div class="row g-0">
+            <div class="col-lg-6 order-lg-1 my-auto showcase-text">
+                <h2>Recibidos:</h2>
+                <div id="main-container">
+                    <table>
+                        {% if mesaje %}
+                        <tr>
+                            <th>Mensaje:</th>
+                            <th>Enviado por:</th>
+                            <th>Responder</th>
+                        </tr>
+
+                        {% for dato in mesaje %}
+                            <tr>
+                                <td>
+                                    {{dato.texto}}
+                                </td>
+                                <td>
+                                    {{dato.emisor}}
+                                </td>
+                                <td>
+                                    <a class="btn btn-danger" href="{% url 'mensajes' %}">Responder</a>
+                                </td>
+                            </tr>
+
+                        {% endfor %}
+                        {% else %}
+                        
+                        <td>No se ha encontrado ningun mensaje</td>
+                        
+                        {% endif %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>  
+
+{% endblock %}

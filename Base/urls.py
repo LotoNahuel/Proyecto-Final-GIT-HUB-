@@ -18,6 +18,7 @@ urlpatterns = [
 
     path("eliminarModelo/<id>", eliminarModelo, name="eliminarModelo"),
     path("editarModelo/<id>", editarModelo, name="editarModelo"),
+
     path("login/", login_usuario, name="login"),
     path("register/", register, name="registro"),
     path("logout/", LogoutView.as_view(), name="logout"), #Por si quiero cambiar template_name="logout.html"
@@ -25,5 +26,7 @@ urlpatterns = [
     path("agregarAvatar/", agregarAvatar, name="agregarAvatar"),
     path("perfil/", perfil, name="perfil"),
     path("perfilEdit/", perfilEdit, name="perfilEdit"),
-    path("comentFilter/", comentFilter, name="comentFilter"),
+
+    path("mensajes/", mensajes, name="mensajes"),
+    path("emisorAndReceptor/", emisorAndReceptor, name="emisorAndReceptor"),
 ]

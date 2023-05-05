@@ -3,15 +3,17 @@ from .models import *
 from django.contrib.auth.forms import  UserCreationForm
 from django.contrib.auth.models import User
 
+
 class ModeloForm(forms.ModelForm):
-    imagen = forms.ImageField(label="imagen") 
+    imagen = forms.ImageField(label="imagen")
     class Meta:
         model = Modelo
-        fields = ('titulo', 'imagen', 'diseño', 'descripcion')
+        fields = ('titulo', 'imagen', 'diseño', 'descripcion', 'user')
 
-class ComentForm(forms.Form):
-    texto=forms.CharField(max_length=500)
-
+class ComentForm(forms.ModelForm):
+    class Meta:
+        model = Comentario
+        fields = ('user', 'modelo', 'texto')
 
 class RegistroForm(UserCreationForm):
     first_name=forms.CharField(label="Nombre")
@@ -40,9 +42,10 @@ class UserEditForm(UserCreationForm):
 class AvatarForm(forms.Form):
     image=forms.ImageField(label="Image")
 
-class MensajeForm(forms.Form):
-    receptor=forms.CharField(max_length=100)
-    text=forms.CharField(max_length=500)
+class MensajeForm(forms.ModelForm):
+    class Meta:
+        model = Mensaje
+        fields = ('emisor', 'receptor', 'texto')
 
 class PerfilForm(forms.Form):
     text = forms.CharField(max_length=1000)

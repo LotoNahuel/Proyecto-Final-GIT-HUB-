@@ -7,59 +7,81 @@
 <section class="showcase">
     <div class="container-fluid p-2">
         <div class="row g-0">
-            <div class="col-lg-4 order-lg-2 my-auto showcase-text">
-                <div id="main-container">                        
-                    <table>                           
-                        <tbody>
+            <div class="col-lg-6 order-lg-1 my-auto showcase-text">
+                <h2>Post:</h2>
+                <h2>{{ mensaje }}</h2>
+                <div id="main-container">
+                    <table>
+                        {% if modelos %}
+                        <tr>
+                            <th>Usuario</th>
+                            <th>titulo</th>
+                            <th>imagen</th>
+                            <th>diseño</th>
+                            <th>descripcion</th>
+                            <th>fechaPost</th>
+                            <th>Opciones</th>
+                            <th>Comentarios</th>
+                        </tr>
 
-                            {% if modelos %}
+                        {% for modelo in modelos %}
                             <tr>
-                                <th>titulo</th>
-                                <th>imagen</th>
-                                <th>diseño</th>
-                                <th>descripcion</th>
-                                <th>fechaPost</th>
-                                <th>Opciones</th>
+                                <td>
+                                    {{modelo.user}}
+                                </td>
+                                <td>
+                                    {{modelo.titulo}}
+                                </td>
+                                <td>
+                                    <img src="{{modelo.imagen.url}}" style="width:720px;height:480px;" alt="">
+                                </td>
+                                <td>
+                                    {{modelo.diseño}}
+                                </td>
+                                <td>
+                                    {{modelo.descripcion}}
+                                </td>
+                                <td>
+                                    {{modelo.fechaPost}}
+                                </td>
+                                <td>
+                                    {% if user == modelo.user %}
+                                    <a class="btn btn-danger" href="{% url 'eliminarModelo' modelo.id %}">Eliminar</a>
+                                    <a class="btn btn-danger" href="{% url 'editarModelo' modelo.id %}">Editar</a>
+                                    {% else %}
+                                    {% endif %}
+                                    <a class="btn btn-danger" href="{% url 'comentarios' %}">Comentarios</a>
+                                </td>
+                                
+                                {% if comentario %}
+                                    
+                                    
+                                    {% for dato in comentario %}
+                                        {% if modelo.descripcion == dato.modelo %}
+                                    
+                                        
+                                        <th>{{dato.texto}}</th>
+                                        
+                                        {% else %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    
+                                        
+                                {% else %}
+                                <td>No se a encontrado ningun comentario</td>
+                                {% endif %}
                             </tr>
-                            
-                            {% for modelo in modelos %}
-                            <tr>
-                                <tr>
-                                    <td>
-                                        {{modelo.titulo}}
-                                    </td>
-                                    <td>
-                                        <img src="{{modelo.imagen.url}}" style="width:720px;height:480px;" alt="">
-                                    </td>
-                                    <td>
-                                        {{modelo.diseño}}
-                                    </td>
-                                    <td>
-                                        {{modelo.descripcion}}
-                                    </td>
-                                    <td>
-                                        {{modelo.fechaPost}}
-                                    </td>
-                                    <td>
-                                        <a class="btn btn-danger" href="{% url 'eliminarModelo' modelo.id %}">Eliminar</a>
-                                        <a class="btn btn-danger" href="{% url 'editarModelo' modelo.id %}">Editar</a>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                            
-                            {% else %}
 
-                            <td>No se ha encontrado ningun modelo</td>
-                            
-                            {% endif %}
-
-                            
-                        </tbody>
-                    </table>                
+                        {% endfor %}
+                        {% else %}
+                        
+                        <td>No se ha encontrado ningun modelo</td>
+                        
+                        {% endif %}
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 </section>   
-
 {% endblock %}

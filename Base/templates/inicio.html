@@ -2,12 +2,47 @@
 
 {% load static %}
 
-
-{% block titulo %}
-    <h1>Bienvenido a la pagina de inicio</h1>
-{% endblock %}
-
 {% block contenido_que_cambia %}
+
+<header class="masthead">
+    <div class="container position-relative">
+        <div class="row justify-content-center">
+            <div class="col-xl-6">
+                <div class="text-center text-white">
+
+                    <h1>Bienvenido</h1>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="showcase">
+    <div class="container-fluid p-0">
+        <div class="row g-0">
+            <img class="col-lg-6 order-lg-2 text-white showcase-img" src="{% static 'assets/img/render_1.png' %}"></img>
+            <div class="col-lg-6 order-lg-1 my-auto showcase-text">
+                <h2>Tu lugar para compartir</h2>
+                <p class="lead mb-0">Somos la primera pagina donde nos sentramos en el renderizado, podras subir y encontrar todo tipo de imagenes renderizadas. Hasta podras recibir encargos por privado por parte de la comunidad</p>
+            </div>
+        </div>
+        <div class="row g-0">
+            <img class="col-lg-6 text-white showcase-img" src="{% static 'assets/img/advanced_animation.87.png' %}"></img>
+            <div class="col-lg-6 my-auto showcase-text">
+                <h2>Proyectos y Porfolio</h2>
+                <p class="lead mb-0">Podras subir tus proyectos de la Universidad, ademas compartiendo tu perfil podran visualizar tus proyectos o trabajos que te serviran como porfolio.</p>
+            </div>
+        </div>
+        <div class="row g-0">
+            <img class="col-lg-6 order-lg-2 text-white showcase-img" src="{% static 'assets/img/advanced_animation.86.png' %}"></img>
+            <div class="col-lg-6 order-lg-1 my-auto showcase-text">
+                <h2>¿Y los Modelados 3D y las Animaciones?</h2>
+                <p class="lead mb-0">En poco tiempo agregaremos un metodo para subir y visualizar los Modelos en 3D y las Animaciones.</p>
+            </div>
+        </div>
+    </div>
+</section>
 
 <h2>{{ mensaje }}</h2>
         
