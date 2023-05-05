@@ -4,6 +4,8 @@
 
 {% block contenido_que_cambia %}
 
+<h2>{{ mensaje }}</h2>
+
 <section class="showcase">
     <div class="container-fluid p-2">
         <div class="row g-0">
@@ -13,7 +15,10 @@
                         <tbody>
                             <tr>
                                 <th>
-                                    <h1>Usuario:{{usu}}</h1>
+                                    <h1>
+                                        Usuario:{{usu}}
+                                        <a class="btn btn-primary" href="{% url 'editarUsuario' %}">Editar Usuario</a>
+                                    </h1>
                                 </th>
                                 <th>Descripcion</th>
                             </tr>
@@ -29,7 +34,8 @@
                                 <a class="btn btn-danger" href="{% url 'perfilEdit' %}">Editar Descripcion</a>
                             </td>
                         </tbody>
-                    </table>                
+                    </table>
+                    <a class="btn btn-primary" href="{% url 'agregarAvatar' %}">Editar Avatar</a>            
                 </div>
             </div>
         </div>

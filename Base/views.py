@@ -248,10 +248,10 @@ def editar_usuario(request):
             usuario.first_name=info["first_name"]
             usuario.last_name=info["last_name"]
             usuario.email=info["email"]
-            usuario.password1=info["password1"]
-            usuario.password2=info["password2"]
-            usuario.save()
-            return render(request, "inicio.html", {"mensaje": f"Usuario {usuario.username} a sido editado."})
+            login_usuario(request)
+            if login_usuario(request) is True:
+                form.save()
+                return render(request, "perfil.html", {"mensaje": "Datos editados correctamente"})
         else:
             return render(request, "editarUsuario.html", {"form": form, "nombreusuario": usuario.username, "avatar": obtenerAvatar(request)})
     else:

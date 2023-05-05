@@ -82,23 +82,17 @@
                                     <a class="btn btn-danger" href="{% url 'comentarios' %}">Comentarios</a>
                                 </td>
                                 
-                                {% if comentario %}
-                                    
-                                    
-                                    {% for dato in comentario %}
-                                        {% if modelo.descripcion == dato.modelo %}
+                                {% for dato in comentario %}
+                                    {% if modelo.id == dato.modelo.id %}
                                     
                                         
-                                        <th>{{dato.texto}}</th>
-                                        
-                                        {% else %}
-                                        {% endif %}
-                                    {% endfor %}
-                                    
-                                        
-                                {% else %}
-                                <td>No se a encontrado ningun comentario</td>
-                                {% endif %}
+                                    <th>Usuario:{{dato.user}}
+                                        Comentó:{{dato.texto}}</th>
+
+                                    {% else %}
+                                    {% endif %}
+                                {% endfor %}
+
                             </tr>
 
                         {% endfor %}
