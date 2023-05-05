@@ -1,30 +1,25 @@
-{% extends "padre.html" %}
+{% extends "index.html" %}
 
 {% block contenido_que_cambia %}
 
-<section class="showcase">
-    <div class="container-fluid p-2">
-        <div class="row g-0">
-            <div class="col-lg-6 order-lg-1 my-auto showcase-text">
-                <h2>Comentarios:</h2>
-                <p class="lead mb-0">Comentar</p>
-                <div id="main-container">
-                    <table>
-                        <form action="" method="post">
-                            <table>
-                                {{ form }}
-                                {% csrf_token %}
-                            </table>
-                            
-                            <table>
-                                <input type="submit" value="Agregar"/>
-                            </table>
-                        </form>
-                    </table>
-                </div>
-            </div>
-        </div>
+<h2 class="featurette-heading fw-normal lh-1">Crear comentario</h2>
+
+<hr class="featurette-divider">
+
+  <div class="row featurette">
+    <div class="col-md-7">
+      <form action="" method="POST">
+        <table>
+          {{ form }}
+          {% csrf_token %}
+        </table>
+        <h3>
+          <input type="submit" value="Comentar">
+        </h3>
+      </form>
     </div>
-</section>
+  </div>
+
+<hr class="featurette-divider">
 
 {% endblock %}

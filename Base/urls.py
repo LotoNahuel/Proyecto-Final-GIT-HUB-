@@ -29,4 +29,5 @@ urlpatterns = [
 
     path("mensajes/", mensajes, name="mensajes"),
     path("emisorAndReceptor/", emisorAndReceptor, name="emisorAndReceptor"),
+    path("about/", about, name="about"),
 ]

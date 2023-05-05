@@ -32,7 +32,8 @@ def otroFilter(request):
     diseño = ["diseño"]
     if diseño != "":
         modelos = Modelo.objects.filter(diseño__icontains="Otro").all()
-        return render(request, "otro.html", {"modelos": modelos, "avatar": obtenerAvatar(request)})
+        comentario = Comentario.objects.all()
+        return render(request, "otro.html", {"modelos": modelos, "comentario": comentario, "avatar": obtenerAvatar(request)})
     else:
         return render (request, "otro.html")
 
@@ -41,7 +42,8 @@ def arteFilter(request):
     diseño = ["Arte"]
     if diseño != "":
         modelos = Modelo.objects.filter(diseño__icontains="Arte").all()
-        return render(request, "arte.html", {"modelos": modelos, "avatar": obtenerAvatar(request)})
+        comentario = Comentario.objects.all()
+        return render(request, "arte.html", {"modelos": modelos, "comentario": comentario, "avatar": obtenerAvatar(request)})
     else:
         return render (request, "arte.html")
 
@@ -50,7 +52,8 @@ def modaFilter(request):
     diseño = ["diseño"]
     if diseño != "":
         modelos = Modelo.objects.filter(diseño__icontains="Moda").all()
-        return render(request, "moda.html", {"modelos": modelos, "avatar": obtenerAvatar(request)})
+        comentario = Comentario.objects.all()
+        return render(request, "moda.html", {"modelos": modelos, "comentario": comentario, "avatar": obtenerAvatar(request)})
     else:
         return render (request, "moda.html")
 
@@ -59,7 +62,8 @@ def joyaFilter(request):
     diseño = ["diseño"]
     if diseño != "":
         modelos = Modelo.objects.filter(diseño__icontains="Joyas").all()
-        return render(request, "joya.html", {"modelos": modelos, "avatar": obtenerAvatar(request)})
+        comentario = Comentario.objects.all()
+        return render(request, "joya.html", {"modelos": modelos, "comentario": comentario, "avatar": obtenerAvatar(request)})
     else:
         return render(request, "joya.html")
 
@@ -68,7 +72,8 @@ def casaFilter(request):
     diseño = ["diseño"]
     if diseño != "":
         modelos = Modelo.objects.filter(diseño__icontains="Casa").all()
-        return render(request, "casa.html", {"modelos": modelos, "avatar": obtenerAvatar(request)})
+        comentario = Comentario.objects.all()
+        return render(request, "casa.html", {"modelos": modelos, "comentario": comentario, "avatar": obtenerAvatar(request)})
     else:
         return render(request, "casa.html")
 
@@ -77,7 +82,8 @@ def arquitecturaFilter(request):
     diseño = ["diseño"]
     if diseño != "":
         modelos = Modelo.objects.filter(diseño__icontains="Arquitectura").all()
-        return render(request, "arquitectura.html", {"modelos": modelos, "avatar": obtenerAvatar(request)})
+        comentario = Comentario.objects.all()
+        return render(request, "arquitectura.html", {"modelos": modelos, "comentario": comentario, "avatar": obtenerAvatar(request)})
     else:
         return render(request, "arquitectura.html")
 
@@ -86,7 +92,8 @@ def artilugioFilter(request):
     diseño = ["diseño"]
     if diseño != "":
         modelos = Modelo.objects.filter(diseño__icontains="Artilugio").all()
-        return render(request, "artilugio.html", {"modelos": modelos, "avatar": obtenerAvatar(request)})
+        comentario = Comentario.objects.all()
+        return render(request, "artilugio.html", {"modelos": modelos, "comentario": comentario, "avatar": obtenerAvatar(request)})
     else:
         return render(request, "artilugio.html")
 
@@ -95,7 +102,8 @@ def juegoFilter(request):
     diseño = ["diseño"]
     if diseño != "":
         modelos = Modelo.objects.filter(diseño__icontains="Juego").all()
-        return render(request, "juego.html", {"modelos": modelos, "avatar": obtenerAvatar(request)})
+        comentario = Comentario.objects.all()
+        return render(request, "juego.html", {"modelos": modelos, "comentario": comentario, "avatar": obtenerAvatar(request)})
     else:
         return render(request, "juego.html")
 
@@ -104,7 +112,8 @@ def herramientaFilter(request):
     diseño = ["diseño"]
     if diseño != "":
         modelos = Modelo.objects.filter(diseño__icontains="Herramienta").all()
-        return render(request, "herramienta.html", {"modelos": modelos, "avatar": obtenerAvatar(request)}) 
+        comentario = Comentario.objects.all()
+        return render(request, "herramienta.html", {"modelos": modelos, "comentario": comentario, "avatar": obtenerAvatar(request)}) 
     else:
         return render(request, "herramienta.html")
 
@@ -186,7 +195,7 @@ def register(request):
         if form.is_valid():
             username= form.cleaned_data.get("username")
             form.save()
-            return render(request, "login.html", {"mensaje": f"Se creo el usuario {username}"})
+            return render(request, "login.html", {"mensaje": f"Se creo el usuario {username}", "avatar": obtenerAvatar(request)})
         else:
             return render(request, "registro.html", {"form": form, "mensaje": "Error al crear el usuario"})
     else:
@@ -281,3 +290,6 @@ def agregarAvatar(request):
     else:
         form=AvatarForm()
         return render(request, "agregarAvatar.html", {"form": form, "usuario": request.user, "avatar": obtenerAvatar(request)})
+    
+def about(request):
+    return render(request, "about.html", {"avatar": obtenerAvatar(request)})

@@ -1,13 +1,29 @@
-{% extends "padre.html" %}
+{% extends "index.html" %}
 
 {% load static %}
 
 {% block contenido_que_cambia %}
-    <h3>{{ mensaje }}</h3>
-    <form action="{% url 'agregarAvatar' %}" method="POST" enctype="multipart/form-data"> {% csrf_token %}
+
+<h2 class="featurette-heading fw-normal lh-1">Editar avatar: <span class="text-body-secondary"></span></h2>
+
+<h3>{{ mensaje }}</h3>
+
+<hr class="featurette-divider">
+
+  <div class="row featurette">
+    <div class="col-md-7">
+      <form action="{% url 'agregarAvatar' %}" method="POST" enctype="multipart/form-data">
         <table>
-            {{ form }}
+          {{ form }}
+          {% csrf_token %}
         </table>
-        <input type="submit" value="Guardar">
-    </form>
+        <h3>
+          <input type="submit" value="Guardar cambios">
+        </h3>
+      </form>
+    </div>
+</div>
+
+<hr class="featurette-divider">
+    
 {% endblock %}

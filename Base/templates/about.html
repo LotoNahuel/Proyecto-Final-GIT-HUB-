@@ -1,0 +1,38 @@
+{% extends "index.html" %}
+
+{% load static %}
+
+
+{% block contenido_que_cambia %}
+
+<h2 class="featurette-heading fw-normal lh-1">Sobre mi <span class="text-body-secondary"></span></h2>
+
+<hr class="featurette-divider">
+
+    <div class="row featurette">
+      <div class="col-md-7">
+        <h2 class="featurette-heading fw-normal lh-1">Nahuel Gustavo Loto, 24 años<span class="text-body-secondary"></span></h2>
+        <h5>
+            Soy estudiante de Diseño Industrail, actualmente Modelo y Renderizo objetos por hobby,
+            esto fue una de las razones por la que me inspire en la realizacion de esta pag, el 
+            echo de que siempre tenia que subir mis entrega a una plataforma que nunca funcionaba,
+            y otra razon y la que mas me lleva es la de un lugar donde porder subir tus render,
+            animaciones.
+            Buscaba una forma donde los que amamos y trabajan de esto tengan un lugar para compartir
+            y mostrar sus proyectos, ademas serviria como un porfolio, para que las empresas en puedan
+            ver tu trabajo y asi porder contactarte con vos, actualmente existe una pag llamada CULTS3D
+            pero se basa solo en el modelado en 3D, y no busco eso, si no un lugar donde podamos
+            mostrar lo que amamos hacer, y que aquellos que no tengan el conocimiento suficiente puedan
+            compartir su progreso, donde la comunidad misma pueda brindarles tips para mejorar.
+        </h5>
+        
+
+      </div>
+      <div class="col-md-3">
+        <img src="{{modelo.imagen.url}}" style="width:720px;height:480px;" alt="">
+      </div>
+    </div>
+
+<hr class="featurette-divider">
+
+{% endblock %}

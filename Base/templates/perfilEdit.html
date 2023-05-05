@@ -1,26 +1,31 @@
-{% extends "padre.html" %}
+{% extends "index.html" %}
 
 {% load static %}
 
 {% block contenido_que_cambia %}
-<h1 class="mb-5">FORMULARIO DE INGRESO</h1>
 
+
+<h2 class="featurette-heading fw-normal lh-1">Editar descripcion: <span class="text-body-secondary"></span></h2>
 
 <h3>{{ mensaje }}</h3>
 
-<form action="{% url 'perfilEdit' %}" method="POST"> {% csrf_token %}
+<hr class="featurette-divider">
 
-    <table>
+  <div class="row featurette">
+    <div class="col-md-7">
+      <form action="{% url 'perfilEdit' %}" method="POST">
+        <table>
+          {{ form }}
+          {% csrf_token %}
+        </table>
+        <h3>
+          <input type="submit" value="Guardar cambios">
+        </h3>
+      </form>
+    </div>
+  </div>
 
-        {{ form }}
+<hr class="featurette-divider">
 
-    </table>
-
-    <input type="submit" value="Guardar cambios">
-
-
-
-
-</form>
 
 {% endblock %}

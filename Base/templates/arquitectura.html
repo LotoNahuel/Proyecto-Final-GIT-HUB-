@@ -1,87 +1,60 @@
-{% extends "padre.html" %}
+{% extends "index.html" %}
 
 {% load static %}
 
 {% block contenido_que_cambia %}
 
-<section class="showcase">
-    <div class="container-fluid p-2">
-        <div class="row g-0">
-            <div class="col-lg-6 order-lg-1 my-auto showcase-text">
-                <h2>{{ mensaje }}</h2>
-                <div id="main-container">
-                    <table>
-                        {% if modelos %}
-                        <tr>
-                            <th>Usuario</th>
-                            <th>titulo</th>
-                            <th>imagen</th>
-                            <th>diseño</th>
-                            <th>descripcion</th>
-                            <th>fechaPost</th>
-                            <th>Opciones</th>
-                            <th>Comentarios</th>
-                        </tr>
+<h2 class="featurette-heading fw-normal lh-1">Post <span class="text-body-secondary"></span></h2>
+<h2>{{ mensaje }}</h2>
 
-                        {% for modelo in modelos %}
-                            <tr>
-                                <td>
-                                    {{modelo.user}}
-                                </td>
-                                <td>
-                                    {{modelo.titulo}}
-                                </td>
-                                <td>
-                                    <img src="{{modelo.imagen.url}}" style="width:720px;height:480px;" alt="">
-                                </td>
-                                <td>
-                                    {{modelo.diseño}}
-                                </td>
-                                <td>
-                                    {{modelo.descripcion}}
-                                </td>
-                                <td>
-                                    {{modelo.fechaPost}}
-                                </td>
-                                <td>
-                                    {% if user == modelo.user %}
-                                    <a class="btn btn-danger" href="{% url 'eliminarModelo' modelo.id %}">Eliminar</a>
-                                    <a class="btn btn-danger" href="{% url 'editarModelo' modelo.id %}">Editar</a>
-                                    {% else %}
-                                    {% endif %}
-                                    <a class="btn btn-danger" href="{% url 'comentarios' %}">Comentarios</a>
-                                </td>
-                                
-                                {% if comentario %}
-                                    
-                                    
-                                    {% for dato in comentario %}
-                                        {% if modelo.descripcion == dato.modelo %}
-                                    
-                                        
-                                        <th>{{dato.texto}}</th>
-                                        
-                                        {% else %}
-                                        {% endif %}
-                                    {% endfor %}
-                                    
-                                        
-                                {% else %}
-                                <td>No se a encontrado ningun comentario</td>
-                                {% endif %}
-                            </tr>
+<hr class="featurette-divider">
 
-                        {% endfor %}
-                        {% else %}
-                        
-                        <td>No se ha encontrado ningun modelo</td>
-                        
-                        {% endif %}
-                    </table>
-                </div>
-            </div>
-        </div>
+{% if modelos %}
+{% for modelo in modelos %}
+<hr class="featurette-divider">
+
+    <div class="row featurette">
+      <div class="col-md-7">
+        <h2 class="featurette-heading fw-normal lh-1">{{modelo.titulo}} <span class="text-body-secondary"></span></h2>
+        <h5>
+            Usuario: <p class="lead">{{modelo.user}}</p>
+        </h5>
+        <h5>
+            Diseño: <p class="lead">{{modelo.diseño}}</p>
+        </h5>
+        <h5>
+            Descripcion: <p class="lead">{{modelo.descripcion}}</p>
+        </h5>
+        <h5>
+            Fecha: <p class="lead">{{modelo.fechaPost}}</p>
+        </h5>
+        {% if user == modelo.user %}
+        <a class="btn btn-danger" href="{% url 'eliminarModelo' modelo.id %}">Eliminar</a>
+        <a class="btn btn-danger" href="{% url 'editarModelo' modelo.id %}">Editar</a>
+        {% else %}
+        {% endif %}
+        <a class="btn btn-danger" href="{% url 'comentarios' %}">Comentar</a>
+
+        {% for dato in comentario %}
+            {% if modelo.id == dato.modelo.id %}
+            <h3>Comentarios:</h3>
+            <h5>
+                Comentario: <p class="lead">{{dato.user}} / {{dato.texto}}</p>
+            </h5>
+            {% else %}
+            {% endif %}
+        {% endfor %}
+
+      </div>
+      <div class="col-md-3">
+        <img src="{{modelo.imagen.url}}" style="width:720px;height:480px;" alt="">
+      </div>
     </div>
-</section>   
+{% endfor %}
+{% else %}
+<p class="lead">No hay posteos</p>
+{% endif %}
+
+<hr class="featurette-divider">
 
 {% endblock %}

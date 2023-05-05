@@ -1,23 +1,29 @@
-{% extends "padre.html" %}
+{% extends "index.html" %}
 
 {% load static %}
 
 {% block contenido_que_cambia %}
 
-    <h3>{{ mensaje }}</h3>
+<h2 class="featurette-heading fw-normal lh-1">Editar datos</h2>
 
-    <form action="{% url 'login' %}" method="POST"> 
-        
-        {% csrf_token %}
+<h3>{{ mensaje }}</h3>
 
+<hr class="featurette-divider">
+
+  <div class="row featurette">
+    <div class="col-md-7">
+      <form action="{% url 'login' %}" method="POST">
         <table>
-
-            {{ form }}
-
+          {{ form }}
+          {% csrf_token %}
         </table>
+        <h3>
+          <input type="submit" value="Guardar cambios">
+        </h3>
+      </form>
+    </div>
+  </div>
 
-        <input type="submit" value="INGRESAR">
-
-    </form>
+<hr class="featurette-divider">
 
 {% endblock %}

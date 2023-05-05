@@ -1,34 +1,29 @@
-{% extends "padre.html" %}
+{% extends "index.html" %}
 
 {% load static %}
 
 {% block contenido_que_cambia %}
 
-<section class="showcase">
-    <div class="container-fluid p-2">
-        <div class="row g-0">
-            <div class="col-lg-6 order-lg-1 my-auto showcase-text">
-                <h2>Formulario:</h2>
-                <p class="lead mb-0">Complete los campos, para enviar un mensaje.</p>
-                <div id="main-container">
-                    <table>
-                        <form action="" method="post">
-                            <table>
-                                {{ form }}
-                                {% csrf_token %}
-                            </table>
-                            
-                            <table>
-                                <input type="submit" value="Enviar"/>
-                            </table>
-                        </form>
+<h2 class="featurette-heading fw-normal lh-1">Mensajes</h2>
+<a class="btn btn-danger" href="{% url 'emisorAndReceptor' %}">Ver mensajes</a>
 
-                        <a class="btn btn-danger" href="{% url 'emisorAndReceptor' %}">Ver mensajes</a>
-                    </table>
-                </div>
-            </div>
+<hr class="featurette-divider">
+    <h2 class="featurette-heading fw-normal lh-1">Enviar mensaje</h2>
+
+    <div class="row featurette">
+        <div class="col-md-7">
+          <form action="" method="post">
+            <table>
+              {{ form }}
+              {% csrf_token %}
+            </table>
+            <h3>
+              <input type="submit" value="Enviar">
+            </h3>
+          </form>
         </div>
-    </div>
-</section>
+      </div>
+
+<hr class="featurette-divider">
 
 {% endblock %}

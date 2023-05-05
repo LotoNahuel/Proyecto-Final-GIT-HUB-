@@ -1,14 +1,28 @@
-{% extends "padre.html" %}
+{% extends "index.html" %}
 
 {% load static %}
 
 {% block contenido_que_cambia %}
-    <h3>{{ mensaje }}</h3>
-    <form action="{% url 'editarModelo' modelo.id %}" method="POST" enctype="multipart/form-data">
+
+<h2 class="featurette-heading fw-normal lh-1">Editar post</h2>
+
+<h3>{{ mensaje }}</h3>
+
+<hr class="featurette-divider">
+
+  <div class="row featurette">
+    <div class="col-md-7">
+      <form action="{% url 'editarModelo' modelo.id %}" method="POST" enctype="multipart/form-data">
         <table>
-            {{ form }} 
-            {% csrf_token %}
+          {{ form }}
+          {% csrf_token %}
         </table>
-        <input type="submit" value="Guardar Cambios">
-    </form>
+        <h3>
+          <input type="submit" value="Guardar cambios">
+        </h3>
+      </form>
+    </div>
+  </div>
+
+<hr class="featurette-divider">
 {% endblock %}
