@@ -27,6 +27,9 @@ def modelos(request):
     modelos = Modelo.objects.all()
     return render(request, "carga.html", {"modelos": modelos, "form": form, "comentario": comentario, "avatar": obtenerAvatar(request)})
 
+
+
+
 @login_required
 def otroFilter(request):
     diseño = ["diseño"]
@@ -128,7 +131,7 @@ def eliminarModelo(request, id):
     modelo.delete()
     modelos=Modelo.objects.all()
     form=ModeloForm()
-    return render(request, "carga.html", {"modelos": modelos, "mensaje": "Modelo eliminado", "form": form})
+    return render(request, "carga.html", {"modelos": modelos, "mensaje": "Modelo eliminado", "form": form, "avatar": obtenerAvatar(request)})
 
 @login_required
 def editarModelo(request, id):
@@ -141,7 +144,7 @@ def editarModelo(request, id):
             form.save()
             modelos = Modelo.objects.all()
             form=ModeloForm()
-            return render(request, "carga.html", {"modelos":modelos, "mensaje": "Editado correctamente", "form": form})
+            return render(request, "carga.html", {"modelos":modelos, "mensaje": "Editado correctamente", "form": form, "avatar": obtenerAvatar(request)})
         pass
     else:
         formulary= ModeloForm(initial={"titulo":modelo.titulo, "diseño":modelo.diseño, "descripcion":modelo.descripcion, "fechaPost":modelo.fechaPost})
@@ -195,7 +198,7 @@ def register(request):
         if form.is_valid():
             username= form.cleaned_data.get("username")
             form.save()
-            return render(request, "login.html", {"mensaje": f"Se creo el usuario {username}", "avatar": obtenerAvatar(request)})
+            return render(request, "login.html", {"mensaje": f"Se creo el usuario {username}"})
         else:
             return render(request, "registro.html", {"form": form, "mensaje": "Error al crear el usuario"})
     else:
@@ -219,19 +222,23 @@ def login_usuario(request):
             return render(request, "login.html", {"form": form, "mensaje":"Usuario y/o contraseña incorrectos"})
     else:
         form=AuthenticationForm()
-        return render(request, "login.html", {"form": form})
+        return render(request, "login.html", {"form": form, "avatar": obtenerAvatar(request)})
 
 @login_required   
 def perfilEdit(request):
+    usuario = ["usuario"]
+    user=request.user.id
     if request.method=="POST":
         form = PerfilForm(request.POST)
-        if form.is_valid():
+        if form.is_valid() and usuario != "":
             perfil=Perfil(usuario=request.user, text=request.POST["text"])
             perfilViejo=Perfil.objects.filter(usuario=request.user)
             if len (perfilViejo)>0:
                 (perfilViejo)[0].delete()
             perfil.save()
-            return render(request, "perfil.html", {"avatar": obtenerAvatar(request)})
+            perfil = Perfil.objects.filter(usuario=user).all()
+            modelos = Modelo.objects.filter(user=user).all()
+            return render(request, "perfil.html", {"perfil": perfil, "modelos": modelos, "usu":request.user, "avatar": obtenerAvatar(request)})
         pass
     else:
         form=PerfilForm()
@@ -257,12 +264,12 @@ def editar_usuario(request):
             usuario.first_name=info["first_name"]
             usuario.last_name=info["last_name"]
             usuario.email=info["email"]
-            login_usuario(request)
-            if login_usuario(request) is True:
-                form.save()
-                return render(request, "perfil.html", {"mensaje": "Datos editados correctamente"})
+            usuario.pasword1=info["password1"]
+            usuario.password2=info["password2"]
+            usuario.save()
+            return render(request, "perfil.html", {"mensaje": "Datos editados correctamente", "avatar": obtenerAvatar(request)})
         else:
-            return render(request, "editarUsuario.html", {"form": form, "nombreusuario": usuario.username, "avatar": obtenerAvatar(request)})
+            return render(request, "editarUsuario.html", {"mensaje" "Error"})
     else:
         form=UserEditForm(instance=usuario)
         return render(request, "editarUsuario.html", {"form": form, "nombreusuario":usuario.username, "avatar": obtenerAvatar(request)})
