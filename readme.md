@@ -37,7 +37,7 @@ Python 3.11.2
 Django 4.1.7
 
 - Pruebas de las funciones
-Ver archivo titulado "" el cual se encuentra en 
+Ver archivo titulado "" el cual se encuentra en el repositorio de GitHub: https://github.com/LotoNahuel/Proyecto-Final-GIT-HUB-.git
 
 - Video de Demostración
-
+https://youtu.be/qLh2yhocn5U
