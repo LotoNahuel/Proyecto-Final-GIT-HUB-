@@ -3,7 +3,7 @@
 - Alumno: Nahuel Gustavo Loto
 
 - Nombre del Proyecto:
- Render 3D
+ Posteo de Renders 3D
 
 - Versión:
  1.0
@@ -36,7 +36,7 @@ Bootstrap 5.3
 Python 3.11.2
 Django 4.1.7
 
-- Pruebas de las funciones
+- Casos de prueba
 Ver archivo titulado "" el cual se encuentra en el repositorio de GitHub: https://github.com/LotoNahuel/Proyecto-Final-GIT-HUB-.git
 
 - Video de Demostración
